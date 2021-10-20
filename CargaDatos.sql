@@ -22,7 +22,7 @@ UNIVERSITARIOS INT NOT NULL
 );
 LOAD DATA LOCAL INFILE 'C:\\Users\\samue\\Desktop\\P2_200925238_BD_1\\-bd1-proyecto2-200925238\\ICE-Fuente.csv' INTO TABLE bd1_p2_200925238.TEMPORAL FIELDS TERMINATED BY ';' LINES TERMINATED BY '\r\n' IGNORE 1 LINES(NOMBRE_ELECCION,ANO_ELECCION,PAIS,REGION,DEPTO,MUNICIPIO,PARTIDO,NOMBRE_PARTIDO,SEXO,RAZA,ANALFABETOS,ALFABETOS,PRIMARIA,NIVELMEDIO,UNIVERSITARIOS);
 
-# ---- Carga ER
+# ---- Carga ER ----
 delete from eleccion where idELECCION > -1;
 insert into eleccion(anio_eleccion, nombre_eleccion) select distinct (ANO_ELECCION), NOMBRE_ELECCION from TEMPORAL;
 select count(*) from ELECCION;
@@ -48,12 +48,56 @@ insert into MUNICIPIO(nombre,alfabeto,analfabeto,primaria,nivel_medio,universita
 select count(*) from MUNICIPIO;
 
 delete from REGION where idREGION > -1;
-insert into REGION(nombreRegion) select distinct (REGION) from TEMPORAL;
+insert into REGION(region.nombreRegion, region.idPAIS) select distinct temporal.region, pais.idPAIS from temporal inner join pais on pais.nombre_pais = temporal.pais;
 select count(*) from REGION;
 
-#delete from DEPARTAMENTO where idDEPARTAMENTO > -1;
-#insert into DEPARTAMENTO(nombre_depto, ) select distinct (DEPTO) from TEMPORAL;
-#select count(*) from DEPARTAMENTO;
+delete from DEPARTAMENTO where idDEPARTAMENTO > -1;
+insert into DEPARTAMENTO (DEPARTAMENTO.nombre_depto, DEPARTAMENTO.idRegion) select distinct TEMPORAL.depto, REGION.idRegion from TEMPORAL inner join REGION on region.nombreRegion = TEMPORAL.REGION inner join PAIS on PAIS.nombre_pais = TEMPORAL.PAIS and PAIS.idPAIS = REGION.idPAIS;
+select count(*) from DEPARTAMENTO;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
