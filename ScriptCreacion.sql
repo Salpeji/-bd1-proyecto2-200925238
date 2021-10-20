@@ -1,10 +1,16 @@
+drop database bd1_p2_200925238;
+# --- ELIMINACION DE BD ---
+create database bd1_p2_200925238;
 use bd1_p2_200925238;
---- ELIMINACION TABLAS ---
-
----- Creacion Tablas ER -----
+# ---- Tablas ER -----
 create table MUNICIPIO(
 idMUNICIPIO int primary key AUTO_INCREMENT,
-nombre varchar(255)
+nombre varchar(255),
+alfabeto varchar(255),
+analfabeto varchar(255),
+primaria int,
+nivel_medio int,
+universitario int
 );	
 
 create table PARTIDO(
@@ -12,7 +18,6 @@ idPARTIDO int primary key AUTO_INCREMENT,
 nombre_partido varchar(255),
 siglas varchar(150)
 );
-
 
 create table DEPARTAMENTO(
 idDEPARTAMENTO int primary key AUTO_INCREMENT,
@@ -49,7 +54,7 @@ idPAIS int primary key AUTO_INCREMENT,
 nombre_pais varchar(255)
 );
 
----  RELACION ---
+---  llaves Foraneas ---
 ALTER TABLE MUNICIPIO 
     ADD COLUMN idDEPARTAMENTO INT,
 	ADD CONSTRAINT `fk_relacion_MUNICIPIO_DEPARTAMENTO` FOREIGN KEY (idDEPARTAMENTO)
