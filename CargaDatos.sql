@@ -2,7 +2,6 @@
 SET GLOBAL local_infile=1;
 use bd1_p2_200925238;
 DROP TABLE IF EXISTS TEMPORAL;
-
 CREATE TEMPORARY TABLE TEMPORAL (
 NOMBRE_ELECCION VARCHAR(255) NOT NULL, 
 ANO_ELECCION INT NOT NULL,
@@ -20,7 +19,8 @@ PRIMARIA INT NOT NULL,
 NIVELMEDIO INT NOT NULL,
 UNIVERSITARIOS INT NOT NULL
 );
-LOAD DATA LOCAL INFILE 'C:\\Users\\samue\\Desktop\\P2_200925238_BD_1\\-bd1-proyecto2-200925238\\ICE-Fuente.csv' INTO TABLE bd1_p2_200925238.TEMPORAL FIELDS TERMINATED BY ';' LINES TERMINATED BY '\r\n' IGNORE 1 LINES(NOMBRE_ELECCION,ANO_ELECCION,PAIS,REGION,DEPTO,MUNICIPIO,PARTIDO,NOMBRE_PARTIDO,SEXO,RAZA,ANALFABETOS,ALFABETOS,PRIMARIA,NIVELMEDIO,UNIVERSITARIOS);
+
+LOAD DATA LOCAL INFILE 'ICE-Fuente.csv' INTO TABLE bd1_p2_200925238.TEMPORAL FIELDS TERMINATED BY ';' LINES TERMINATED BY '\r\n' IGNORE 1 LINES(NOMBRE_ELECCION,ANO_ELECCION,PAIS,REGION,DEPTO,MUNICIPIO,PARTIDO,NOMBRE_PARTIDO,SEXO,RAZA,ANALFABETOS,ALFABETOS,PRIMARIA,NIVELMEDIO,UNIVERSITARIOS);
 
 # ---- Carga ER ----
 delete from eleccion where idELECCION > -1;
@@ -48,15 +48,40 @@ insert into MUNICIPIO(nombre,alfabeto,analfabeto,primaria,nivel_medio,universita
 select count(*) from MUNICIPIO;
 
 delete from REGION where idREGION > -1;
-insert into REGION(region.nombreRegion, region.idPAIS) select distinct temporal.region, pais.idPAIS from temporal inner join pais on pais.nombre_pais = temporal.pais;
-select count(*) from REGION;
 
+	insert into REGION(region.nombreRegion, region.idPAIS) 
+	select distinct TEMPORAL.region, pais.idPAIS 
+	from TEMPORAL inner join pais on pais.nombre_pais = TEMPORAL.pais;
+    
+select distinct (p.idPAIS), t.PAIS, p.nombre_pais  from TEMPORAL AS t, PAIS AS p
+where t.PAIS = p.nombre_pais;
+
+/*
 delete from DEPARTAMENTO where idDEPARTAMENTO > -1;
 insert into DEPARTAMENTO (DEPARTAMENTO.nombre_depto, DEPARTAMENTO.idRegion) select distinct TEMPORAL.depto, REGION.idRegion from TEMPORAL inner join REGION on region.nombreRegion = TEMPORAL.REGION inner join PAIS on PAIS.nombre_pais = TEMPORAL.PAIS and PAIS.idPAIS = REGION.idPAIS;
 select count(*) from DEPARTAMENTO;
+*/
 
-
-
+/*
+delete from VOTO where idVOTO > 1;
+INSERT INTO VOTO (VOTO.idRAZA, VOTO.idELECCION, 
+				  VOTO.idPARTIDO, VOTO.idSEXO)
+    SELECT distinct
+        RAZA.idRAZA,
+        ELECCION.idELECCION,
+        PARTIDO.idPARTIDO,
+        SEXO.idSEXO
+    FROM TEMPORAL
+        INNER JOIN PAIS ON PAIS.nombre_pais = TEMPORAL.pais 
+        INNER JOIN REGION ON REGION.nombreRegion = TEMPORAL.region AND REGION.idPAIS = PAIS.idPAIS
+        INNER JOIN DEPARTAMENTO ON DEPARTAMENTO.nombre_depto = TEMPORAL.depto AND DEPARTAMENTO.idREGION = REGION.idRegion
+        INNER JOIN RAZA ON RAZA.nombreRaza = TEMPORAL.RAZA
+        INNER JOIN ELECCION ON ELECCION.nombre_eleccion = TEMPORAL.NOMBRE_ELECCION AND ELECCION.anio_eleccion = TEMPORAL.ANO_ELECCION
+        INNER JOIN PARTIDO ON PARTIDO.nombre_partido = TEMPORAL.NOMBRE_PARTIDO
+        INNER JOIN SEXO ON SEXO.tipo_sexo = TEMPORAL.SEXO;
+select count(*) from VOTO;
+        
+  */      
 
 
 
