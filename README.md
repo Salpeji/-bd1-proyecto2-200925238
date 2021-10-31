@@ -22,3 +22,7 @@ En este caso se eliminan todos los campos del cual no dependan de la clave, del 
 
 ![image](https://user-images.githubusercontent.com/15185688/139573592-2c88a128-0ea6-47ad-bed0-0f6397c4c542.png)
 
+MODELO ENTIDAD RELACIONAL:
+![image](https://user-images.githubusercontent.com/15185688/139573825-87738020-8f23-472e-a6e3-53639ea8d7e7.png)
+
+
