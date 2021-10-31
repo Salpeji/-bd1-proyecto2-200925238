@@ -1,10 +1,13 @@
+ /*Distribuir DATOS*/  
+     
+     
 # ---- TEMPORAL
 SET GLOBAL local_infile=1;
 use bd1_p2_200925238;
 DROP TABLE IF EXISTS TEMPORAL;
 
 CREATE TEMPORARY TABLE TEMPORAL (
-NOMBRE_ELECCION VARCHAR(255) NOT NULL, 
+NOMBRE_ELECCION VARCHAR(255) NOT NULL,
 ANO_ELECCION INT NOT NULL,
 PAIS VARCHAR(255) NOT NULL,
 REGION  VARCHAR(255) NOT NULL,
@@ -20,12 +23,8 @@ PRIMARIA INT NOT NULL,
 NIVELMEDIO INT NOT NULL,
 UNIVERSITARIOS INT NOT NULL
 );
-LOAD DATA LOCAL INFILE 'ICE-Fuente.csv' INTO TABLE bd1_p2_200925238.TEMPORAL FIELDS TERMINATED BY ';' LINES TERMINATED BY '\r\n' IGNORE 1 LINES(NOMBRE_ELECCION,ANO_ELECCION,PAIS,REGION,DEPTO,MUNICIPIO,PARTIDO,NOMBRE_PARTIDO,SEXO,RAZA,ANALFABETOS,ALFABETOS,PRIMARIA,NIVELMEDIO,UNIVERSITARIOS);
+LOAD DATA LOCAL INFILE 'C:\\DATA\\ICE-Fuente.csv' INTO TABLE bd1_p2_200925238.TEMPORAL FIELDS TERMINATED BY ';' LINES TERMINATED BY '\r\n' IGNORE 1 LINES(NOMBRE_ELECCION,ANO_ELECCION,PAIS,REGION,DEPTO,MUNICIPIO,PARTIDO,NOMBRE_PARTIDO,SEXO,RAZA,ANALFABETOS,ALFABETOS,PRIMARIA,NIVELMEDIO,UNIVERSITARIOS);
 
-
-
-
-# ---- Carga ER ----
 delete from eleccion where idELECCION > -1;
 insert into eleccion(anio_eleccion, nombre_eleccion) select distinct (ANO_ELECCION), NOMBRE_ELECCION from TEMPORAL;
 select * from ELECCION;
@@ -57,130 +56,44 @@ select * from DEPARTAMENTO;
 
 
 delete from MUNICIPIO where idMUNICIPIO > -1;
-insert into MUNICIPIO(nombre,alfabeto,analfabeto,primaria,nivel_medio,universitario,idPAIS,idDEPARTAMENTO,idREGION ) 
-select distinct (MUNICIPIO), ALFABETOS, ANALFABETOS, PRIMARIA, NIVELMEDIO, UNIVERSITARIOS, (SELECT idPAIS FROM PAIS WHERE nombre_pais=PAIS ) ,(SELECT idDEPARTAMENTO FROM DEPARTAMENTO WHERE nombre_depto= DEPTO) , (SELECT idREGION FROM REGION WHERE nombreRegion= REGION) from TEMPORAL;
+insert into MUNICIPIO(nombre,idDEPARTAMENTO)
+select MUNICIPIO, (SELECT idDEPARTAMENTO FROM DEPARTAMENTO WHERE nombre_depto= DEPTO) from TEMPORAL group by municipio ;
 select count(*) from MUNICIPIO;
 
 
-delete from VOTO where idVOTO > -1;
-insert into VOTO(idSEXO, idRAZA,idPARTIDO,idELECCION,idMUNICIPIO)  
-  select (SELECT idSEXO FROM SEXO WHERE tipo_sexo = SEXO),
-         (SELECT idRAZA FROM RAZA WHERE nombreRaza = RAZA),
-         (SELECT idPARTIDO FROM PARTIDO WHERE nombre_partido = NOMBRE_PARTIDO LIMIT 1), 
-         (SELECT idELECCION FROM ELECCION WHERE nombre_eleccion = NOMBRE_ELECCION LIMIT 1),
-         (SELECT idMUNICIPIO FROM MUNICIPIO WHERE nombre = MUNICIPIO LIMIT 1)
-  from TEMPORAL;
-select count(*) from VOTO;
+delete from region_departamento where idREGIONDEPTO > -1;
+insert into region_departamento(idREGION ,idDEPARTAMENTO)
+select (select idREGION from region where nombreRegion = REGION), (select idDEPARTAMENTO from departamento where nombre_depto= DEPTO) from  TEMPORAL group by DEPTO;
+select count(*) from region_departamento;
 
 
 
-/*SELECT (SELECT idMUNICIPIO FROM MUNICIPIO WHERE nombre = MUNICIPIO) FROM TEMPORAL;*/
-/*
-delete from VOTO where idVOTO > -1;
-insert into VOTO(idPARTIDO)  
-select (SELECT idPARTIDO FROM PARTIDO WHERE nombre_partido = PARTIDO) from TEMPORAL;
-select count(*) from VOTO;*/
+delete from PAIS_REGION where idPAISREGION > -1;
+insert into PAIS_REGION(idPAIS ,idREGION)
+select (select idPAIS from pais where nombre_pais= PAIS), (select idREGION from region where nombreRegion= REGION) from TEmporal where REGION in (select distinct(REGION) from temporal)  group by PAIS,REGION;
+select count(*) from PAIS_REGION;
 
 /*
-delete from VOTO where idVOTO > -1;
-insert into VOTO(idRAZA)  
-select (SELECT idRAZA FROM RAZA WHERE nombreRaza = T.RAZA) from TEMPORAL AS T;
-select count(*) from VOTO;*/
-/*
-
-delete from VOTO where idVOTO > -1;
-insert into VOTO(idPARTIDO)  
-select (SELECT idPARTIDO FROM PARTIDO WHERE nombre_partido = PARTIDO) from TEMPORAL;
-select count(*) from VOTO;
-
-/*
-
-idDEPARTAMENTO,idREGION,
-(SELECT idPAIS FROM PAIS WHERE nombre_pais=PAIS )  as IdPAIS 
- (SELECT idDEPARTAMENTO FROM DEPARTAMENTO WHERE nombre_depto= DEPTO) , (SELECT idREGION FROM REGION WHERE nombreRegion= REGION),
-delete from MUNICIPIO where idMUNICIPIO > -1;
-insert into MUNICIPIO(nombre,alfabeto,analfabeto,primaria,nivel_medio,universitario) select distinct (MUNICIPIO), ALFABETOS, ANALFABETOS, PRIMARIA, NIVELMEDIO, UNIVERSITARIOS from TEMPORAL;
-select count(*) from MUNICIPIO;
-
-
-
-
-
-
-
-/*
-delete from DEPARTAMENTO where idDEPARTAMENTO > -1;
-insert into DEPARTAMENTO (DEPARTAMENTO.nombre_depto, DEPARTAMENTO.idRegion) select distinct TEMPORAL.depto, REGION.idRegion from TEMPORAL inner join REGION on region.nombreRegion = TEMPORAL.REGION inner join PAIS on PAIS.nombre_pais = TEMPORAL.PAIS and PAIS.idPAIS = REGION.idPAIS;
-select count(*) from DEPARTAMENTO;
+delete from voto where idVOTO > -1;
+insert into voto (alfabeto,analfabeto,primaria,nivel_medio,universitario)
+select (ANALFABETOS,ALFABETOS,PRIMARIA,NIVELMEDIO,UNIVERSITARIOS) from  TEMPORAL
+select count(*) from PAIS_REGION;
 */
 
+
+
+/*select (select idPAIS from pais where nombre_pais= PAIS), (select idREGION from region where nombreRegion= REGION) from TEmporal where REGION in (select distinct(REGION) from temporal)  group by PAIS,REGION;*/
+
+/*COMANDOS PRUEBA*/
 /*
-delete from VOTO where idVOTO > 1;
-INSERT INTO VOTO (VOTO.idRAZA, VOTO.idELECCION, 
-				  VOTO.idPARTIDO, VOTO.idSEXO)
-    SELECT distinct
-        RAZA.idRAZA,
-        ELECCION.idELECCION,
-        PARTIDO.idPARTIDO,
-        SEXO.idSEXO
-    FROM TEMPORAL
-        INNER JOIN PAIS ON PAIS.nombre_pais = TEMPORAL.pais 
-        INNER JOIN REGION ON REGION.nombreRegion = TEMPORAL.region AND REGION.idPAIS = PAIS.idPAIS
-        INNER JOIN DEPARTAMENTO ON DEPARTAMENTO.nombre_depto = TEMPORAL.depto AND DEPARTAMENTO.idREGION = REGION.idRegion
-        INNER JOIN RAZA ON RAZA.nombreRaza = TEMPORAL.RAZA
-        INNER JOIN ELECCION ON ELECCION.nombre_eleccion = TEMPORAL.NOMBRE_ELECCION AND ELECCION.anio_eleccion = TEMPORAL.ANO_ELECCION
-        INNER JOIN PARTIDO ON PARTIDO.nombre_partido = TEMPORAL.NOMBRE_PARTIDO
-        INNER JOIN SEXO ON SEXO.tipo_sexo = TEMPORAL.SEXO;
-select count(*) from VOTO;
-        
-  */      
+select * from temporal where municipio='Sensuntepeque';
 
+SELECT * FROM municipio WHERE idDEPARTAMENTO=1
 
+SELECT * From region_departamento where idRegion=1;
+select * from municipio where nombre='Sensuntepeque';
 
+select MUNICIPIO, ALFABETOS, ANALFABETOS, PRIMARIA, NIVELMEDIO, UNIVERSITARIOS from TEMPORAL group by municipio ;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+select * from  TEmporal where MUNICIPIO ='Sensuntepeque';
+*/
