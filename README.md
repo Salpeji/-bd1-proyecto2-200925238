@@ -1,6 +1,7 @@
 # -bd1-proyecto2-200925238
 BD1_Proyecto2_2doSemestre2021
 
+DOCUMENTACION ANALIZADA PARA ICE PROYETO 2 BASES DE DATOS 1
 
 PRIMERA FORMA NORMAL:
 Se aplico primera forma normal a elecciones electorales Instituto Centroamerica Electoral  ICE, En el cual se elimina la redundancia:
