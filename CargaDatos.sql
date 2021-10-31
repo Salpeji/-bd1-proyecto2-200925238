@@ -6,7 +6,7 @@ SET GLOBAL local_infile=1;
 use bd1_p2_200925238;
 DROP TABLE IF EXISTS TEMPORAL;
 
-CREATE TEMPORARY TABLE TEMPORAL (
+CREATE TABLE TEMPORAL (
 NOMBRE_ELECCION VARCHAR(255) NOT NULL,
 ANO_ELECCION INT NOT NULL,
 PAIS VARCHAR(255) NOT NULL,
@@ -23,7 +23,7 @@ PRIMARIA INT NOT NULL,
 NIVELMEDIO INT NOT NULL,
 UNIVERSITARIOS INT NOT NULL
 );
-LOAD DATA LOCAL INFILE 'C:\\DATA\\ICE-Fuente.csv' INTO TABLE bd1_p2_200925238.TEMPORAL FIELDS TERMINATED BY ';' LINES TERMINATED BY '\r\n' IGNORE 1 LINES(NOMBRE_ELECCION,ANO_ELECCION,PAIS,REGION,DEPTO,MUNICIPIO,PARTIDO,NOMBRE_PARTIDO,SEXO,RAZA,ANALFABETOS,ALFABETOS,PRIMARIA,NIVELMEDIO,UNIVERSITARIOS);
+LOAD DATA LOCAL INFILE 'C:\\P2_DB1_200925238\\-bd1-proyecto2-200925238\\ICE-Fuente.csv' INTO TABLE bd1_p2_200925238.TEMPORAL FIELDS TERMINATED BY ';' LINES TERMINATED BY '\r\n' IGNORE 1 LINES(NOMBRE_ELECCION,ANO_ELECCION,PAIS,REGION,DEPTO,MUNICIPIO,PARTIDO,NOMBRE_PARTIDO,SEXO,RAZA,ANALFABETOS,ALFABETOS,PRIMARIA,NIVELMEDIO,UNIVERSITARIOS);
 
 delete from eleccion where idELECCION > -1;
 insert into eleccion(anio_eleccion, nombre_eleccion) select distinct (ANO_ELECCION), NOMBRE_ELECCION from TEMPORAL;
@@ -70,30 +70,15 @@ select count(*) from region_departamento;
 
 delete from PAIS_REGION where idPAISREGION > -1;
 insert into PAIS_REGION(idPAIS ,idREGION)
-select (select idPAIS from pais where nombre_pais= PAIS), (select idREGION from region where nombreRegion= REGION) from TEmporal where REGION in (select distinct(REGION) from temporal)  group by PAIS,REGION;
+select (select idPAIS from pais where nombre_pais= PAIS), (select idREGION from region where nombreRegion= REGION) from TEMPORAL where REGION in (select distinct(REGION) from TEMPORAL)  group by PAIS,REGION;
 select count(*) from PAIS_REGION;
 
-/*
+
 delete from voto where idVOTO > -1;
-insert into voto (alfabeto,analfabeto,primaria,nivel_medio,universitario)
-select (ANALFABETOS,ALFABETOS,PRIMARIA,NIVELMEDIO,UNIVERSITARIOS) from  TEMPORAL
+insert into voto (alfabeto,analfabeto,primaria,nivel_medio,universitario,idMUNICIPIO,idRAZA,idSEXO,idELECCION,idPARTIDO)
+select ANALFABETOS,ALFABETOS,PRIMARIA,NIVELMEDIO,UNIVERSITARIOS,(select idMUNICIPIO from municipio where nombre = MUNICIPIO),(select idRAZA from raza where nombreRaza = RAZA),(select idSEXO from sexo where tipo_sexo = SEXO),(select idELECCION from eleccion where anio_eleccion = ANO_ELECCION),(select idPARTIDO from partido where siglas = PARTIDO) from  TEMPORAL;
 select count(*) from PAIS_REGION;
-*/
 
 
 
-/*select (select idPAIS from pais where nombre_pais= PAIS), (select idREGION from region where nombreRegion= REGION) from TEmporal where REGION in (select distinct(REGION) from temporal)  group by PAIS,REGION;*/
 
-/*COMANDOS PRUEBA*/
-/*
-select * from temporal where municipio='Sensuntepeque';
-
-SELECT * FROM municipio WHERE idDEPARTAMENTO=1
-
-SELECT * From region_departamento where idRegion=1;
-select * from municipio where nombre='Sensuntepeque';
-
-select MUNICIPIO, ALFABETOS, ANALFABETOS, PRIMARIA, NIVELMEDIO, UNIVERSITARIOS from TEMPORAL group by municipio ;
-
-select * from  TEmporal where MUNICIPIO ='Sensuntepeque';
-*/
