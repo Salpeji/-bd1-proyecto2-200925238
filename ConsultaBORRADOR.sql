@@ -31,7 +31,9 @@ from PAIS p, VOTO v, SEXO x, RAZA r where r.nombreRaza = 'INDIGENAS' and x.tipo_
 
 /*total de mujeres que votaron en guatemala de las que son alfabeticas*/
 
-select distinct( p.nombre_pais), v.alfabeto as votos_alfabetas_mujeres
+select distinct( p.nombre_pais), 
+v.alfabeto as votos_alfabetas_mujeres,
+round((v.idVOTO/v.alfabeto)*100,3)
 from VOTO v inner join RAZA r inner join SEXO x inner join PAIS p
 on v.idSEXO = x.idSEXO 
 and v.idRAZA = r.idRAZA
