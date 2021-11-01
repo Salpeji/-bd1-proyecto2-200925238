@@ -2,7 +2,6 @@
 BD1_Proyecto2_2doSemestre2021
 
 DOCUMENTACION ANALIZADA PARA ICE PROYETO 2 BASES DE DATOS 1
-*.- 
 MODELO LOGICO: Se detalla el modelo entidad relacional sobre el cual se aplicara las formas normales uno dos y tres.
 ![MODELO_ER](https://user-images.githubusercontent.com/15185688/139573785-7ea05979-72ff-46d3-adde-2d73a4cc5612.jpg)
 
