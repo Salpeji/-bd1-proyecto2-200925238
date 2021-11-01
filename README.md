@@ -7,6 +7,8 @@ MODELO LOGICO: Se detalla el modelo entidad relacional sobre el cual se aplicara
 
 ![image](https://user-images.githubusercontent.com/15185688/139573624-1b2a3e61-82c1-4350-a4cc-7f262b634e06.png)
 
+MODELO RELACIONAL:
+![image](https://user-images.githubusercontent.com/15185688/139573825-87738020-8f23-472e-a6e3-53639ea8d7e7.png)
 
 PRIMERA FORMA NORMAL:
 Se aplico primera forma normal a elecciones electorales Instituto Centroamerica Electoral  ICE, En el cual se elimina la redundancia:
@@ -22,9 +24,15 @@ En este caso se eliminan todos los campos del cual no dependan de la clave, del 
 
 ![image](https://user-images.githubusercontent.com/15185688/139573592-2c88a128-0ea6-47ad-bed0-0f6397c4c542.png)
 
-MODELO ENTIDAD RELACIONAL:
-![image](https://user-images.githubusercontent.com/15185688/139573825-87738020-8f23-472e-a6e3-53639ea8d7e7.png)
+
 
 
 Al final al aplicar la primera forma normal uno, segunda forma normal dos y tercera forma normal tres el modelo queda optimizado sin redundacia de datos y sin entidades o tuplas repetidas, para este modelo se considero minuciosamente que los datos no se pierdan para las elecciones.
 ![MODELO_FINAL_ER](https://user-images.githubusercontent.com/15185688/139617910-015e3a38-9d1c-40a7-bbb5-8536b53ca19b.png)
+
+MODELO LOGICO (ER_ICE_BD1_P2_200925238):
+![image](https://user-images.githubusercontent.com/15185688/139627346-ff0cab2c-117c-47cd-84f9-daae7e799a66.png)
+
+
+MODELO RELACIONAL ER_ICE_BD1_P2_200925238:
+![image](https://user-images.githubusercontent.com/15185688/139627392-f85a1af2-1f43-47a2-b7bb-1d65c48bd674.png)
