@@ -5,10 +5,10 @@ DOCUMENTACION ANALIZADA PARA ICE PROYETO 2 BASES DE DATOS 1
 MODELO LOGICO: Se detalla el modelo entidad relacional sobre el cual se aplicara las formas normales uno dos y tres.
 ![MODELO_ER](https://user-images.githubusercontent.com/15185688/139573785-7ea05979-72ff-46d3-adde-2d73a4cc5612.jpg)
 
-![image](https://user-images.githubusercontent.com/15185688/139573624-1b2a3e61-82c1-4350-a4cc-7f262b634e06.png)
-
 MODELO RELACIONAL:
 ![image](https://user-images.githubusercontent.com/15185688/139573825-87738020-8f23-472e-a6e3-53639ea8d7e7.png)
+
+![image](https://user-images.githubusercontent.com/15185688/139573624-1b2a3e61-82c1-4350-a4cc-7f262b634e06.png)
 
 PRIMERA FORMA NORMAL:
 Se aplico primera forma normal a elecciones electorales Instituto Centroamerica Electoral  ICE, En el cual se elimina la redundancia:
