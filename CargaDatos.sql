@@ -1,5 +1,10 @@
- /*Distribuir DATOS*/  
-     
+ /*Distribuir DATOS. 2, 3, 4, 9, 11, 12*/  
+     /*
+        --7 -- Denis
+        --9 -- Sam
+        11 -- Sam    
+        13 -- Denis
+     */
      
 # ---- TEMPORAL
 SET GLOBAL local_infile=1;

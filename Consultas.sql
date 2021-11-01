@@ -1,13 +1,34 @@
-
 /*CONSULTAS */
 
-/* CONSULTA NO 7     */
-       
-select p.nombre_pais, r.nombreRegion
-from pais_region pr,region r ,pais p
-where pr.idPAIS = p.idPAIS  and pr.idREGION = r.idREGION;
+/* 7.- Desplegar el nombre del país, la región y el promedio de votos por departamento. 
+        Por ejemplo: si la región tiene tres departamentos, se debe sumar todos los votos 
+        de la región y dividirlo dentro de tres (número de departamentos de la región)     */
+select t.PAIS as 'nombre_pais', 
+		t.REGION as 'descripcion_region', 
+		round( SUM(alfabetos+analfabetos)/1, 4) as 'total_votos' 
+	from temporal  as t 
+	group by pais,region;
 
-select *,sum(v.alfabeto+analfabeto) from voto v group by v.idMUNICIPIO ;
+/* 9.- Desplegar el nombre del pais y el porcentaje de votos por raza */
+select p.nombre_pais, r.nombreRaza AS nombre_raza,
+		round( (v.idVOTO/p.idPAIS )*100, 4 ) as votos_raza 
+from pais p, raza r, voto v;
 
-select SUM(v.alfabeto+v.analfabeto) from voto v ;
-select SUM(v.ALFABETOS+v.ANALFABETOS) from TEmporal v where PAIS= 'EL SALVADOR' and REGION ='REGION 1'; 
+/* 11.- Desplegar el total de votos y el porcentaje de votos 
+emitidos por mujeres indigenas alfabetas*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
