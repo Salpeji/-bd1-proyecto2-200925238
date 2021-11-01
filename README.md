@@ -26,3 +26,5 @@ MODELO ENTIDAD RELACIONAL:
 ![image](https://user-images.githubusercontent.com/15185688/139573825-87738020-8f23-472e-a6e3-53639ea8d7e7.png)
 
 
+Al final al aplicar la primera forma normal uno, segunda forma normal dos y tercera forma normal tres el modelo queda optimizado sin redundacia de datos y sin entidades o tuplas repetidas, para este modelo se considero minuciosamente que los datos no se pierdan para las elecciones.
+![MODELO_FINAL_ER](https://user-images.githubusercontent.com/15185688/139617910-015e3a38-9d1c-40a7-bbb5-8536b53ca19b.png)
